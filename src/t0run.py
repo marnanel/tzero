@@ -30,6 +30,12 @@ class Implementation(object):
 	def write(self, command):
 		self._sub.stdin.write(command + '\n')
 
+	def close(self):
+		print 'Terminating process', self._sub.pid, 'here'
+		self._sub.terminate()
+		print 'Waiting...'
+		self._sub.wait()
+
 class Script(object):
 	def __init__(self, implementation):
 		print 'script init.'
@@ -73,7 +79,7 @@ def main():
 	implementation = Implementation()
 	playthrough = Playthrough(implementation)
 	playthrough.run()
-
+	implementation.close()
 
 if __name__=='__main__':
 	main()

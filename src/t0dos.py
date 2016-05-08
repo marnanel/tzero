@@ -5,8 +5,7 @@ import tempfile
 import glob
 import select
 import time
-
-# TODO: deal properly with the emulator child process exiting.
+import signal
 
 # Number of seconds to wait for the game to start up.
 SLEEP_WAIT = 14
@@ -67,6 +66,9 @@ class Emulator(object):
 
 				self._emu.stdin.write(input)
 
+	def close(self):
+		print 'Closing emulator.'
+		self._emu.kill()
 
 def copy_in_original(source, target):
 
@@ -91,12 +93,21 @@ def copy_in_original(source, target):
 		open(target_filename, 'wb').write(contents)
 
 def main():
+
 	temp_dir = tempfile.mkdtemp(prefix='temp_t0dos')
 
 	# FIXME: original directory should be configurable
 	copy_in_original(source='orig', target=temp_dir)
 
 	emu = Emulator(contents_dir=temp_dir)
+
+	def sigterm_handler(signum, frame):
+		print '--- SIGTERM received ---'
+		print 'Emu is ',emu
+		emu.close()
+		sys.exit()
+
+	signal.signal(signal.SIGTERM, sigterm_handler)
 
 	emu.launch()
 	emu.run()
