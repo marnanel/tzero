@@ -126,7 +126,49 @@ class Playthrough(Script):
 
 		self.do('get bell', expect='Taken')
 
+		self.do('e', expect='Pantry')
 
+		# Pantry
+
+		self.do('get jar', expect='Taken')
+
+		self.do('w', expect='Caretaker\'s Cottage')
+		self.do('s', expect='Greenhouse')
+		self.do('se', expect='Fountain Court')
+		self.do('s', expect='Topiary')
+		self.do('e', expect='Topiary')
+
+		# Topiary
+
+		topiary_path = 'EESSENNNESWSESSWWWWNNESWSEEEEN'
+
+		for move in topiary_path:
+			result = self.do(move, 'to the Northwest')
+
+			for line in result.split('\n'):
+				words = line.split()
+
+				if len(words)<4:
+					continue
+
+				if words[3]!='to' and words[4]!='the':
+					continue
+
+				monster = words[1]
+
+				for (affix, tool) in ( ('latch', 'extractor'),
+					('key', 'fixer-upper') ):
+
+					if affix in monster:
+						self.do('pull '+monster+' with '+tool,
+							expect='which now reads')
+
+		self.do('e', expect='Amazing Space')
+
+		# Amazing Space
+
+		self.do('attach fixer-upper to extractor', expect='lightning')
+		self.do('get latchkey', expect='Taken')
 def main():
 	implementation = Implementation()
 	playthrough = Playthrough(implementation)
