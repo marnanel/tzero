@@ -75,6 +75,58 @@ class Playthrough(Script):
 		self.do('x fob pocket', expect='just the right')
 		self.do('x thigh pocket', expect='mind of its own')
 
+		# Field of Poppies
+
+		self.do('nw', expect='Field of Poppies')
+		self.do('x poppy', expect='dry husk')
+		self.do('get seed', expect='bursts')
+
+		# Field of Stone
+
+		self.do('s', expect='Field of Stone')
+		birdpoo = ''
+		birdpoo += self.do('leave no stone unturned', expect='prehistoric')
+		birdpoo += self.do('get claw', expect='Taken')
+		birdpoo += self.do('x tern', expect='tirelessly')
+
+		while 'taking aim' not in birdpoo:
+			birdpoo += self.do('wait')
+
+		self.do('stone terns', expect='stoned')
+		self.do('get tern', expect='turn to stone')
+		self.do('get feather', expect='Taken')
+
+		# off to the Coldhouse
+
+		self.do('se', expect='Desolate Field')
+		self.do('s', expect='Back of Museum')
+		self.do('e', expect='Greenhouse')
+		self.do('ne', expect='Coldhouse')
+
+		# Coldhouse
+
+		self.do('pull lever', expect='arctic')
+		self.do('get token', expect='Taken')
+		self.do('get lever', expect='Taken')
+
+		self.do('sw', expect='Greenhouse')
+		self.do('e', expect='Shed')
+
+		# Shed
+
+		self.do('x shelf', expect='splintery')
+		self.do('get extractor', expect='Taken')
+		self.do('get fixer-upper', expect='Taken')
+
+		self.do('w', expect='Greenhouse')
+		self.do('open door', expect='Opened')
+		self.do('n', expect='Caretaker\'s Cottage')
+
+		# Cottage
+
+		self.do('get bell', expect='Taken')
+
+
 def main():
 	implementation = Implementation()
 	playthrough = Playthrough(implementation)
