@@ -1,0 +1,11 @@
+The status line looks like this:
+
+  River Bed.                 6:00AM * Day 1 * Present * 0/0
+  ^ left aligned             ^ right aligned
+
+The "*"s are square bullets.
+A move takes five minutes (always?)
+There is no indication of the direction of time flow.
+The first of the final pair of numbers is the score;
+the second is the number of moves.
+ 
