@@ -1,4 +1,4 @@
-t-zero.z5: T-Zero.inf Rooms.inf
+t-zero.z5: T-Zero.inf Present.inf Objects.inf
 	inform T-Zero.inf t-zero.z5
 
 play: t-zero.z5

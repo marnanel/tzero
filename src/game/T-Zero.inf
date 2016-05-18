@@ -1,15 +1,19 @@
 Constant Story "T-ZERO";
-Constant Headline "^an adventure for the time being^";
+Constant Headline "^an adventure for the time being^in memoriam Dennis M. Cunningham^";
 Constant DEBUG;
 
 Include "parser";
 Include "verblib";
 Include "grammar";
 
-Include "Rooms.inf";
+Include "Present.inf";
+Include "Objects.inf";
 
 [ Initialise;
     location = RiverBed;
+    move CompassThing to Player;
+    move PinkSlip to Player;
+
     print "^^^
 You awake from uneasy dreams.  Since you're no longer on easy street,
 maybe that's the way your dreams are going to be from now on.  Exactly
