@@ -59,6 +59,7 @@ class Script(object):
 		print result
 
 		if expect is not None and not expect in result:
+			self._implementation.close()
 			raise Exception('"%s" was not found in:\n%s' % (expect, result))
 
 		return result
@@ -169,6 +170,71 @@ class Playthrough(Script):
 
 		self.do('attach fixer-upper to extractor', expect='lightning')
 		self.do('get latchkey', expect='Taken')
+		self.do('get orange', expect='Taken')
+
+		self.do('e', expect='Platform Over River')
+		self.do('ne', expect='Suspension Bridge')
+		self.do('snap suspenders', expect='retort')
+		self.do('ne', expect='Across the River')
+		self.do('e', expect='Junkyard')
+
+		# Junkyard
+
+		self.do('call rag man Anagram', expect='proper name')
+		self.do('ask Anagram about violets', expect='wallflower')
+		self.do('dig in dump with claw', expect='debugged')
+		self.do('get ring', expect='swoops')
+		self.do('get code', expect='Taken')
+		self.do('get flag', expect='Taken')
+		self.do('give code to anagram', expect='wire-frame')
+
+		self.do('w', expect='Across the River')
+		self.do('sw', expect='Suspension Bridge')
+
+		self.do('snap suspenders', expect='retort')
+		self.do('tie loop to stanchion', expect='infinite')
+		self.do('snap suspenders', expect='retort')
+		self.do('d', expect='On the Rocks')
+
+		# On the Rocks
+
+		self.do('get coaster', expect='Taken')
+
+		self.do('u', expect='Suspension Bridge')
+		self.do('snap suspenders', expect='retort')
+		self.do('sw', expect='Platform Over River')
+		self.do('sw', expect='English Garden')
+
+		# English Garden
+
+		rain = ''
+		while 'dreary' not in rain:
+			rain = self.do('x rain')
+
+		self.do('stand in rain', expect='walrus')
+		self.do('get walrus', expect='Taken')
+		self.do('wear walrus', expect='earlobes')
+
+		self.do('get out of rain')
+		self.do('n', expect='Topiary of Time')
+		self.do('n', expect='Fountain Court')
+		self.do('nw', expect='Greenhouse')
+		self.do('nw', expect='Hothouse')
+
+		# Hothouse
+
+		self.do('get salamander with coaster', expect='You now have')
+
+		self.do('se', expect='Greenhouse')
+		self.do('w', expect='Back of Museum')
+		self.do('n', expect='Desolate Field')
+		self.do('ne', expect='River Bed')
+		self.do('n', expect='UpRiver')
+
+		# UpRiver
+
+		self.do('put ring in pool')
+	
 def main():
 	implementation = Implementation()
 	playthrough = Playthrough(implementation)
