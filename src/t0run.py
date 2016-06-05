@@ -211,7 +211,10 @@ class Playthrough(Script):
 		while 'dreary' not in rain:
 			rain = self.do('x rain')
 
-		self.do('stand in rain', expect='walrus')
+		walrus = ''
+		while 'walrus' not in walrus:
+			walrus += self.do('stand in rain')
+
 		self.do('get walrus', expect='Taken')
 		self.do('wear walrus', expect='earlobes')
 
@@ -227,14 +230,46 @@ class Playthrough(Script):
 
 		self.do('se', expect='Greenhouse')
 		self.do('w', expect='Back of Museum')
-		self.do('n', expect='Desolate Field')
-		self.do('ne', expect='River Bed')
-		self.do('n', expect='UpRiver')
+		self.do('sw', expect='West Side of Museum')
+		self.do('s', expect='Cornerstone')
+		self.do('se', expect='Museum Stairs')
+		self.do('n', expect='Portico of Museum')
+		self.do('unlock door with latchkey', expect='Unlocked')
+		self.do('open door', expect='Opened')
 
-		# UpRiver
+		# Museum
 
-		self.do('put ring in pool')
-	
+		self.do('n', expect='Foyer')
+		self.do('n', expect='West-East')
+		self.do('open door', expect='Opened')
+		self.do('n', expect='Administrative')
+		self.do('get slow mirror', expect='Taken')
+		self.do('s', expect='West-East')
+
+		self.do('w', expect='Hall of Clocks')
+		self.do('n', expect='Counter-Clockwise')
+		self.do('jump counterclockwise', expect='Spiral Staircase')
+
+		return
+		#### --- add in later
+
+		self.do('e', expect='Turn in Hall')
+		self.do('s', expect='South-North Hall')
+		self.do('open door', expect='Opened')
+		self.do('e', expect='Computer Room')
+		self.do('n', expect='Green Room')
+
+		# Green Room
+
+		self.do('open door', expect='lethal')
+		self.do('open jar', expect='pressure')
+		self.do('close jar', expect='Closed')
+
+		self.do('n', expect='Countdown')
+		self.do('unlock north door with latchkey')
+		self.do('open north door')
+
+
 def main():
 	implementation = Implementation()
 	playthrough = Playthrough(implementation)
