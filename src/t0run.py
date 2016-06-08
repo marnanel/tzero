@@ -50,16 +50,15 @@ class Implementation(object):
 		command,
 		expect=None):
 		
-		print '====', command
-
 		self.write(command)
 		response = self.read()
 
-		print response
-
 		if expect is not None and not expect in response:
 			self.close()
-			raise Exception('"%s" was not found in:\n%s' % (expect, response))
+			raise Exception('"%s" was not found in:\n=== %s\n%s' % (
+				expect,
+				command,
+				response))
 
 		self._pushToMonitors(command, response)
 		return response
@@ -69,6 +68,9 @@ class Implementation(object):
 		self._sub.terminate()
 		print 'Waiting...'
 		self._sub.wait()
+
+		for monitor in self._monitors:
+		    monitor.close()
 
 class Monitor(object):
 	"""
@@ -83,6 +85,10 @@ class Monitor(object):
 
 	def handle(self, command, response):
 		raise Exception("Abstract method called")
+
+	def close(self):
+		pass
+
 
 class Playthrough(Monitor):
 	"""
@@ -303,10 +309,55 @@ class Playthrough(Monitor):
 		impl.do('unlock north door with latchkey')
 		impl.do('open north door')
 
+class Logger(Monitor):
+
+	def __init__(self,
+		to_stdout = True,
+		to_filename = None):
+
+		self._to_stdout = to_stdout
+
+		if to_filename is not None:
+			self._logfile = open(to_filename, 'w')
+		else:
+		    	self._logfile = None
+
+	def handle(self, command, response):
+
+		content = '==== %s\n%s\n' % (
+			command,
+			response)
+
+		if self._to_stdout:
+			print content
+
+		if self._logfile is not None:
+		    self._logfile.write(content)
+
+	def close(self):
+		if self._logfile is not None:
+		    self._logfile.close()
+
+class RoomNoticer(Monitor):
+	def handle(self, command, reponse):
+		response = response.split('\n')
+		print response
+		try:
+			blankLine = response[:-1].index('')
+		except IndexError:
+			return
+
+		roomName = reponse[blankLine+1]
+
+		print 'Room name is [%s].' % (roomName,)
 
 def main():
 	implementation = Implementation()
 	implementation.addMonitor(Playthrough())
+	implementation.addMonitor(Logger(
+		to_stdout = True,
+		to_filename = 't0run.log',
+		))
 	implementation.run()
 	implementation.close()
 
