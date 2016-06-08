@@ -315,6 +315,8 @@ class Logger(Monitor):
 		to_stdout = True,
 		to_filename = None):
 
+		super(Logger, self).__init__()
+
 		self._to_stdout = to_stdout
 
 		if to_filename is not None:
@@ -338,18 +340,42 @@ class Logger(Monitor):
 		if self._logfile is not None:
 		    self._logfile.close()
 
+MOVEMENTS = (
+	'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw',
+	'up', 'down',
+	'jump counterclockwise',
+	'jump clockwise',
+	)
+
 class RoomNoticer(Monitor):
-	def handle(self, command, reponse):
+
+	def __init__(self):
+		super(RoomNoticer, self).__init__()
+
+		self._seenRooms = set()
+
+	def handle(self, command, response):
+
+		if not command.lower() in MOVEMENTS:
+		    return
+
 		response = response.split('\n')
-		print response
-		try:
-			blankLine = response[:-1].index('')
-		except IndexError:
-			return
 
-		roomName = reponse[blankLine+1]
+		# Either the room name is at the end
+		# of the text, with blank lines around it
+		# (in the case that we didn't just move)
+		# or it's on the first nonblank line
+		# (in the case that we did).
 
-		print 'Room name is [%s].' % (roomName,)
+		roomName = response[response.index('')+1]
+
+		self._enterRoom(name=roomName,
+			firstTime = not roomName in self._seenRooms)
+
+		self._seenRooms.add(roomName)
+
+	def _enterRoom(self, name, firstTime):
+	    print 'Room name is [%s]. First? %d.' % (name, firstTime)
 
 def main():
 	implementation = Implementation()
@@ -358,6 +384,7 @@ def main():
 		to_stdout = True,
 		to_filename = 't0run.log',
 		))
+	implementation.addMonitor(RoomNoticer())
 	implementation.run()
 	implementation.close()
 
