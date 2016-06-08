@@ -10,6 +10,11 @@ class Implementation(object):
 			stdin = subprocess.PIPE,
 			stdout = subprocess.PIPE,
 			)
+		self._monitors = []
+
+	def addMonitor(self, monitor):
+		self._monitors.append(monitor)
+		monitor.setImplementation(self)
 
 	def read(self):
 		buffer = ''
@@ -30,22 +35,16 @@ class Implementation(object):
 	def write(self, command):
 		self._sub.stdin.write(command + '\n')
 
-	def close(self):
-		print 'Terminating process', self._sub.pid, 'here'
-		self._sub.terminate()
-		print 'Waiting...'
-		self._sub.wait()
+	def _pushToMonitors(self, command, response):
+		for monitor in self._monitors:
+		    monitor.handle(command, response)
 
-class Script(object):
-	def __init__(self, implementation):
-		print 'script init.'
-		self._implementation = implementation
+	def run(self):
+		print 'Beginning run.'
 
-		# we just throw this away, because it's
-		# init information which varies by implementation
-		# and isn't useful except for debugging
-
-		self._implementation.read()
+		startupText = self.read()
+		print startupText
+		self._pushToMonitors('', startupText)
 
 	def do(self,
 		command,
@@ -53,98 +52,133 @@ class Script(object):
 		
 		print '====', command
 
-		self._implementation.write(command)
-		result = self._implementation.read()
+		self.write(command)
+		response = self.read()
 
-		print result
+		print response
 
-		if expect is not None and not expect in result:
-			self._implementation.close()
-			raise Exception('"%s" was not found in:\n%s' % (expect, result))
+		if expect is not None and not expect in response:
+			self.close()
+			raise Exception('"%s" was not found in:\n%s' % (expect, response))
 
-		return result
+		self._pushToMonitors(command, response)
+		return response
 
-class Playthrough(Script):
+	def close(self):
+		print 'Terminating process', self._sub.pid, 'here'
+		self._sub.terminate()
+		print 'Waiting...'
+		self._sub.wait()
+
+class Monitor(object):
+	"""
+	A Monitor watches the game being played
+	and interferes where it wants.
+	"""
+	def __init__(self):
+		self._implementation = None
+
+	def setImplementation(self, implementation):
+		self._implementation = implementation
+
+	def handle(self, command, response):
+		raise Exception("Abstract method called")
+
+class Playthrough(Monitor):
+	"""
+	Playthrough watches for the beginning of the game,
+	then injects the commands to play the
+	whole game through.
+	"""
+
+	def handle(self, command, reponse):
+		if command=='':
+		    # at the beginning of the run;
+		    # start the playthrough
+		    self.run()
+
 	def run(self):
-		self.do('inventory', expect = 'in your possession')
-		self.do('x slip', expect='walking papers')
-		self.do('read slip', expect='too near completion')
-		self.do('x compass', expect='cardinal directions')
-		self.do('x me', expect='fade into the woodwork')
-		self.do('x journal page', expect='cryptic')
-		self.do('x fatigues', expect='commodious')
-		self.do('x fob pocket', expect='just the right')
-		self.do('x thigh pocket', expect='mind of its own')
+		impl = self._implementation
+
+		impl.do('inventory', expect = 'in your possession')
+		impl.do('x slip', expect='walking papers')
+		impl.do('read slip', expect='too near completion')
+		impl.do('x compass', expect='cardinal directions')
+		impl.do('x me', expect='fade into the woodwork')
+		impl.do('x journal page', expect='cryptic')
+		impl.do('x fatigues', expect='commodious')
+		impl.do('x fob pocket', expect='just the right')
+		impl.do('x thigh pocket', expect='mind of its own')
 
 		# Field of Poppies
 
-		self.do('nw', expect='Field of Poppies')
-		self.do('x poppy', expect='dry husk')
-		self.do('get seed', expect='bursts')
+		impl.do('nw', expect='Field of Poppies')
+		impl.do('x poppy', expect='dry husk')
+		impl.do('get seed', expect='bursts')
 
 		# Field of Stone
 
-		self.do('s', expect='Field of Stone')
+		impl.do('s', expect='Field of Stone')
 		birdpoo = ''
-		birdpoo += self.do('leave no stone unturned', expect='prehistoric')
-		birdpoo += self.do('get claw', expect='Taken')
-		birdpoo += self.do('x tern', expect='tirelessly')
+		birdpoo += impl.do('leave no stone unturned', expect='prehistoric')
+		birdpoo += impl.do('get claw', expect='Taken')
+		birdpoo += impl.do('x tern', expect='tirelessly')
 
 		while 'taking aim' not in birdpoo:
-			birdpoo += self.do('wait')
+			birdpoo += impl.do('wait')
 
-		self.do('stone terns', expect='stoned')
-		self.do('get tern', expect='turn to stone')
-		self.do('get feather', expect='Taken')
+		impl.do('stone terns', expect='stoned')
+		impl.do('get tern', expect='turn to stone')
+		impl.do('get feather', expect='Taken')
 
 		# off to the Coldhouse
 
-		self.do('se', expect='Desolate Field')
-		self.do('s', expect='Back of Museum')
-		self.do('e', expect='Greenhouse')
-		self.do('ne', expect='Coldhouse')
+		impl.do('se', expect='Desolate Field')
+		impl.do('s', expect='Back of Museum')
+		impl.do('e', expect='Greenhouse')
+		impl.do('ne', expect='Coldhouse')
 
 		# Coldhouse
 
-		self.do('pull lever', expect='arctic')
-		self.do('get token', expect='Taken')
-		self.do('get lever', expect='Taken')
+		impl.do('pull lever', expect='arctic')
+		impl.do('get token', expect='Taken')
+		impl.do('get lever', expect='Taken')
 
-		self.do('sw', expect='Greenhouse')
-		self.do('e', expect='Shed')
+		impl.do('sw', expect='Greenhouse')
+		impl.do('e', expect='Shed')
 
 		# Shed
 
-		self.do('x shelf', expect='splintery')
-		self.do('get extractor', expect='Taken')
-		self.do('get fixer-upper', expect='Taken')
+		impl.do('x shelf', expect='splintery')
+		impl.do('get extractor', expect='Taken')
+		impl.do('get fixer-upper', expect='Taken')
 
-		self.do('w', expect='Greenhouse')
-		self.do('open door', expect='Opened')
-		self.do('n', expect='Caretaker\'s Cottage')
+		impl.do('w', expect='Greenhouse')
+		impl.do('open door', expect='Opened')
+		impl.do('n', expect='Caretaker\'s Cottage')
 
 		# Cottage
 
-		self.do('get bell', expect='Taken')
+		impl.do('get bell', expect='Taken')
 
-		self.do('e', expect='Pantry')
+		impl.do('e', expect='Pantry')
 
 		# Pantry
 
-		self.do('get jar', expect='Taken')
+		impl.do('get jar', expect='Taken')
 
-		self.do('w', expect='Caretaker\'s Cottage')
-		self.do('s', expect='Greenhouse')
-		self.do('se', expect='Fountain Court')
-		self.do('s', expect='Topiary')
-		self.do('e', expect='Topiary')
+		impl.do('w', expect='Caretaker\'s Cottage')
+		impl.do('s', expect='Greenhouse')
+		impl.do('se', expect='Fountain Court')
+		impl.do('s', expect='Topiary')
+		impl.do('e', expect='Topiary')
 
 		# Topiary
 
 		topiary_path = 'EESSENNNESWSESSWWWWNNESWSEEEEN'
 
 		for move in topiary_path:
-			result = self.do(move, 'to the Northwest')
+			result = impl.do(move, 'to the Northwest')
 
 			for line in result.split('\n'):
 				words = line.split()
@@ -161,119 +195,119 @@ class Playthrough(Script):
 					('key', 'fixer-upper') ):
 
 					if affix in monster:
-						self.do('pull '+monster+' with '+tool,
+						impl.do('pull '+monster+' with '+tool,
 							expect='which now reads')
 
-		self.do('e', expect='Amazing Space')
+		impl.do('e', expect='Amazing Space')
 
 		# Amazing Space
 
-		self.do('attach fixer-upper to extractor', expect='lightning')
-		self.do('get latchkey', expect='Taken')
-		self.do('get orange', expect='Taken')
+		impl.do('attach fixer-upper to extractor', expect='lightning')
+		impl.do('get latchkey', expect='Taken')
+		impl.do('get orange', expect='Taken')
 
-		self.do('e', expect='Platform Over River')
-		self.do('ne', expect='Suspension Bridge')
-		self.do('snap suspenders', expect='retort')
-		self.do('ne', expect='Across the River')
-		self.do('e', expect='Junkyard')
+		impl.do('e', expect='Platform Over River')
+		impl.do('ne', expect='Suspension Bridge')
+		impl.do('snap suspenders', expect='retort')
+		impl.do('ne', expect='Across the River')
+		impl.do('e', expect='Junkyard')
 
 		# Junkyard
 
-		self.do('call rag man Anagram', expect='proper name')
-		self.do('ask Anagram about violets', expect='wallflower')
-		self.do('dig in dump with claw', expect='debugged')
-		self.do('get ring', expect='swoops')
-		self.do('get code', expect='Taken')
-		self.do('get flag', expect='Taken')
-		self.do('give code to anagram', expect='wire-frame')
+		impl.do('call rag man Anagram', expect='proper name')
+		impl.do('ask Anagram about violets', expect='wallflower')
+		impl.do('dig in dump with claw', expect='debugged')
+		impl.do('get ring', expect='swoops')
+		impl.do('get code', expect='Taken')
+		impl.do('get flag', expect='Taken')
+		impl.do('give code to anagram', expect='wire-frame')
 
-		self.do('w', expect='Across the River')
-		self.do('sw', expect='Suspension Bridge')
+		impl.do('w', expect='Across the River')
+		impl.do('sw', expect='Suspension Bridge')
 
-		self.do('snap suspenders', expect='retort')
-		self.do('tie loop to stanchion', expect='infinite')
-		self.do('snap suspenders', expect='retort')
-		self.do('d', expect='On the Rocks')
+		impl.do('snap suspenders', expect='retort')
+		impl.do('tie loop to stanchion', expect='infinite')
+		impl.do('snap suspenders', expect='retort')
+		impl.do('d', expect='On the Rocks')
 
 		# On the Rocks
 
-		self.do('get coaster', expect='Taken')
+		impl.do('get coaster', expect='Taken')
 
-		self.do('u', expect='Suspension Bridge')
-		self.do('snap suspenders', expect='retort')
-		self.do('sw', expect='Platform Over River')
-		self.do('sw', expect='English Garden')
+		impl.do('u', expect='Suspension Bridge')
+		impl.do('snap suspenders', expect='retort')
+		impl.do('sw', expect='Platform Over River')
+		impl.do('sw', expect='English Garden')
 
 		# English Garden
 
 		rain = ''
 		while 'dreary' not in rain:
-			rain = self.do('x rain')
+			rain = impl.do('x rain')
 
 		walrus = ''
 		while 'walrus' not in walrus:
-			walrus += self.do('stand in rain')
+			walrus += impl.do('stand in rain')
 
-		self.do('get walrus', expect='Taken')
-		self.do('wear walrus', expect='earlobes')
+		impl.do('get walrus', expect='Taken')
+		impl.do('wear walrus', expect='earlobes')
 
-		self.do('get out of rain')
-		self.do('n', expect='Topiary of Time')
-		self.do('n', expect='Fountain Court')
-		self.do('nw', expect='Greenhouse')
-		self.do('nw', expect='Hothouse')
+		impl.do('get out of rain')
+		impl.do('n', expect='Topiary of Time')
+		impl.do('n', expect='Fountain Court')
+		impl.do('nw', expect='Greenhouse')
+		impl.do('nw', expect='Hothouse')
 
 		# Hothouse
 
-		self.do('get salamander with coaster', expect='You now have')
+		impl.do('get salamander with coaster', expect='You now have')
 
-		self.do('se', expect='Greenhouse')
-		self.do('w', expect='Back of Museum')
-		self.do('sw', expect='West Side of Museum')
-		self.do('s', expect='Cornerstone')
-		self.do('se', expect='Museum Stairs')
-		self.do('n', expect='Portico of Museum')
-		self.do('unlock door with latchkey', expect='Unlocked')
-		self.do('open door', expect='Opened')
+		impl.do('se', expect='Greenhouse')
+		impl.do('w', expect='Back of Museum')
+		impl.do('sw', expect='West Side of Museum')
+		impl.do('s', expect='Cornerstone')
+		impl.do('se', expect='Museum Stairs')
+		impl.do('n', expect='Portico of Museum')
+		impl.do('unlock door with latchkey', expect='Unlocked')
+		impl.do('open door', expect='Opened')
 
 		# Museum
 
-		self.do('n', expect='Foyer')
-		self.do('n', expect='West-East')
-		self.do('open door', expect='Opened')
-		self.do('n', expect='Administrative')
-		self.do('get slow mirror', expect='Taken')
-		self.do('s', expect='West-East')
+		impl.do('n', expect='Foyer')
+		impl.do('n', expect='West-East')
+		impl.do('open door', expect='Opened')
+		impl.do('n', expect='Administrative')
+		impl.do('get slow mirror', expect='Taken')
+		impl.do('s', expect='West-East')
 
-		self.do('w', expect='Hall of Clocks')
-		self.do('n', expect='Counter-Clockwise')
-		self.do('jump counterclockwise', expect='Spiral Staircase')
+		impl.do('w', expect='Hall of Clocks')
+		impl.do('n', expect='Counter-Clockwise')
+		impl.do('jump counterclockwise', expect='Spiral Staircase')
 
 		return
 		#### --- add in later
 
-		self.do('e', expect='Turn in Hall')
-		self.do('s', expect='South-North Hall')
-		self.do('open door', expect='Opened')
-		self.do('e', expect='Computer Room')
-		self.do('n', expect='Green Room')
+		impl.do('e', expect='Turn in Hall')
+		impl.do('s', expect='South-North Hall')
+		impl.do('open door', expect='Opened')
+		impl.do('e', expect='Computer Room')
+		impl.do('n', expect='Green Room')
 
 		# Green Room
 
-		self.do('open door', expect='lethal')
-		self.do('open jar', expect='pressure')
-		self.do('close jar', expect='Closed')
+		impl.do('open door', expect='lethal')
+		impl.do('open jar', expect='pressure')
+		impl.do('close jar', expect='Closed')
 
-		self.do('n', expect='Countdown')
-		self.do('unlock north door with latchkey')
-		self.do('open north door')
+		impl.do('n', expect='Countdown')
+		impl.do('unlock north door with latchkey')
+		impl.do('open north door')
 
 
 def main():
 	implementation = Implementation()
-	playthrough = Playthrough(implementation)
-	playthrough.run()
+	implementation.addMonitor(Playthrough())
+	implementation.run()
 	implementation.close()
 
 if __name__=='__main__':
