@@ -290,6 +290,11 @@ class Playthrough(Monitor):
 		impl.do('n', expect='Counter-Clockwise')
 		impl.do('jump counterclockwise', expect='Spiral Staircase')
 
+		impl.do('open door', expect='Opened')
+		impl.do('e', expect='Library')
+		impl.do('read plaque', expect='curl')
+		impl.do('press button')
+
 		return
 		#### --- add in later
 
@@ -384,7 +389,6 @@ def main():
 		to_stdout = True,
 		to_filename = 't0run.log',
 		))
-	implementation.addMonitor(RoomNoticer())
 	implementation.run()
 	implementation.close()
 
