@@ -44,7 +44,7 @@ class Implementation(object):
 
 		startupText = self.read()
 		print startupText
-		self._pushToMonitors('', startupText)
+		self._pushToMonitors('', '')
 
 	def do(self,
 		command,
@@ -292,16 +292,20 @@ class Playthrough(Monitor):
 
 		impl.do('open door', expect='Opened')
 		impl.do('e', expect='Library')
+
+		# Library
+		impl.do('x plaque')
 		impl.do('read plaque', expect='curl')
-		impl.do('press button')
+		impl.do('press red button', expect='darkroom')
 
-		return
-		#### --- add in later
+		impl.do('read pink slip')
+		impl.do('x blank book')
+		impl.do('read blank book', expect="flutters")
+		impl.do('tear flyleaf from blank book')
 
-		impl.do('e', expect='Turn in Hall')
-		impl.do('s', expect='South-North Hall')
-		impl.do('open door', expect='Opened')
-		impl.do('e', expect='Computer Room')
+		impl.do('se', expect="Clockwise")
+		impl.do('jump clockwise', expect="Computer Room")
+
 		impl.do('n', expect='Green Room')
 
 		# Green Room
@@ -310,7 +314,7 @@ class Playthrough(Monitor):
 		impl.do('open jar', expect='pressure')
 		impl.do('close jar', expect='Closed')
 
-		impl.do('n', expect='Countdown')
+		impl.do('n', expect='Count-Down')
 		impl.do('unlock north door with latchkey')
 		impl.do('open north door')
 
