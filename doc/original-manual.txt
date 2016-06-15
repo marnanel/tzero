@@ -1,0 +1,1278 @@
+                                     -1-
+
+
+                               t-zero V1.04
+
+                      "An Adventure for the Time Being"
+
+
+
+                 Copyright 1991,1992 Dennis M. Cunningham
+
+                              All Rights Reserved
+
+
+
+
+
+
+     TABLE OF CONTENTS
+
+
+         PROLOGUE . . . . . . . . . . . . . . . . . . . . . .  2
+         CREDITS. . . . . . . . . . . . . . . . . . . . . . .  3
+         REVISIONS. . . . . . . . . . . . . . . . . . . . . .  4
+         ADVENTURE GAMING (SAMPLE SCENARIO) . . . . . . . . .  5
+         COMMAND LINE SWITCHES. . . . . . . . . . . . . . . . 10
+         INPUT BUFFER . . . . . . . . . . . . . . . . . . . . 10
+         PLAYER DEFINABLE FUNCTION KEYS . . . . . . . . . . . 10
+         COMMANDS . . . . . . . . . . . . . . . . . . . . . . 11
+         COMMAND SUMMARY. . . . . . . . . . . . . . . . . . . 16
+         ADDITIONAL COMMANDS. . . . . . . . . . . . . . . . . 17
+         VERB LIST. . . . . . . . . . . . . . . . . . . . . . 18
+         KEYBOARD LAYOUT--CURSOR. . . . . . . . . . . . . . . 19
+         KEYBOARD LAYOUT--DIRECTIONAL . . . . . . . . . . . . 21
+         BIBLIOGRAPHY . . . . . . . . . . . . . . . . . . . . 22
+         SHAREWARE INFORMATION. . . . . . . . . . . . . . . . 23
+         ASP OMBUDSMAN STATEMENT. . . . . . . . . . . . . . . 23
+         WARRANTY INFORMATION . . . . . . . . . . . . . . . . 24
+         REGISTRATION INFORMATION . . . . . . . . . . . . . . 26
+         BRITISH REGISTRATION . . . . . . . . . . . . . . . . 26
+         AUSTRALIAN REGISTRATION. . . . . . . . . . . . . . . 27
+         SUPPORT POLICY . . . . . . . . . . . . . . . . . . . 27
+         HINTS. . . . . . . . . . . . . . . . . . . . . . . . 27
+         REGISTRATION FORM. . . . . . . . . . . . . . . . . . 28
+
+                                      -2-
+
+
+
+
+
+     PROLOGUE
+
+
+     A dream came to you as you tossed uneasily upon an unfamiliar bed.
+     In your dream, a time-worn figure waved a scythe in slow arcs across
+     your sky-blue field of vision and picked, out of thin air, letters
+     from a runic alphabet.  The sky-writing from the scythe crystallized
+     in icy trails as a new letter materialized with each sleeping breath
+     your dream encompassed.  When the message was complete, the entire
+     sky was slivered with shining icicles that spelled in full:
+
+        "Somewhere scattered across ages and landscapes are six
+         enticingly round objects that you must locate and some-
+         how transport to progressively future time zones where
+         they can be manipulated in a fashion that will right
+         the troubled times."
+
+     As you deciphered the message, the icicles shattered in a brittle and
+     sparkling avalanche.  You tossed some more and awaited your
+     awakening . . .
+
+                                      -3-
+
+
+
+
+
+     CREDITS
+
+
+     Copyright (c) 1991,1992 Dennis M. Cunningham
+     All Rights Reserved
+
+
+     The author considers himself a programmer with literary leanings.
+     The text adventure genre allows him to explore both avenues
+     simultaneously.  He has been admitted into the Association of
+     Shareware Professionals and this is his first entry into the
+     shareware market.
+
+
+                   _______
+              ____|__     |               (R)
+           --|       |    |-------------------
+             |   ____|__  |  Association of
+             |  |       |_|  Shareware
+             |__|   o   |    Professionals
+           -----|   |   |---------------------
+                |___|___|    MEMBER
+
+
+
+     Credits due to a fine testing team:
+
+         Lead Tester:         Robert Norton
+         Additional Testing:  Scott Blight
+                              Jay Shaffstall
+
+
+     This game, as originally intended, quoted extensively from the works
+     of T. S. Eliot.  Faber and Faber, Ltd. of London, England denied
+     permission to quote Mr. Eliot.  I hope, at some time in the future,
+     they will reconsider their position.
+
+
+     The layout of the maze was originally designed by Robert Abbott for
+     a Martin Gardner column in "Scientific American."  My thanks to Mr.
+     Abbott and Mr. Gardner for granting permission to adapt it for the
+     game.  Those intrigued by the devious machinations of Mr. Abbott's
+     maze may encounter similar challenges in his book, "Mad Mazes"
+     published by Bob Adams, Inc., Publishers.
+
+
+     Neil J. Rubenking's shareware program NAMEGRAM was used to generate
+     several anagrams in the game.  Cipher fanatics and cruciverbists
+     might find this program captivating.
+
+                                      -4-
+
+
+
+
+
+     REVISIONS
+
+
+     V 1.00 -- 3/23/91
+
+     V 1.01 -- 5/11/91 -- Refinements to FIND and WHERE; backspace response;
+                          typos.
+
+     V 1.02 -- 5/19/91 -- Fixes bugs to WHERE, FIND, and IMAGINE.  Fixed bug
+                          that allowed game to be "cheated."
+
+     V 1.03 -- 6/24/91 -- Fixes the notorious GET FROM bug introduced in
+                          version 1.02.
+
+     V 1.04 -- 5/09/92 -- Bundles hint file with unregistered version.
+                          Includes British and Australian registration
+                          information.
+
+                                      -5-
+
+
+
+
+
+     ADVENTURE GAMING (Sample Scenario)
+
+
+     The following scenario (by the way, not from this game) gives you
+     an idea of how to interact with an adventure game.  In the scenario,
+     your input is preceded by >>.  The computer's response is preceded
+     by :.
+
+
+     :Tip of Slumbering Shale-Covered Slope
+
+     >> DOWN
+
+     :You slip and slide down the shale-covered slope.  You shuffle nimbly
+      to waylay a fatal fall, and finally land, somewhat shell-shocked, on
+      your feet.  Your brief confusion soon abates.
+
+
+     :Meandering Culvert
+
+     :You are in the V-shaped bottom of a lazy culvert that meanders
+      slitheringly from west to east.
+
+     >> NORTH
+
+     :You are not about to attempt to scale the slippery shale-covered
+      slope.  Shuffling down was quite enough.
+
+
+     :Meandering Culvert
+
+     >> LOOK
+
+     :You are in the V-shaped bottom of a lazy culvert that meanders
+      slitheringly from west to east.
+
+
+     :Meandering Culvert
+
+     >> EAST
+
+     :You follow one branch of the culvert east and emerge into an open
+      space.
+
+
+     :Valley Floor
+
+     :The slinky culvert blossoms out into a full-fledged valley floor
+      here.  Trilling meadowlarks compete for your attention with sun-
+      drenched flowers that sparkle with metallic hues.  Tidbits and
+      junk bits of metal scraps are scattered amongst the flowers.  It
+      is hard to tell flower from metal.  You are intrigued by a barred
+      door blocking passage to a cave to the NW.
+
+                                      -5-
+
+
+
+
+
+     >> EXAMINE FLOWERS
+
+     :There is a bronze flower, a silver flower, and a copper flower
+      blossoming beneath the spring singing of the mad meadowlarks.
+
+
+     :Valley Floor
+
+     >> X COPPER FLOWER
+
+     :The copper flower shines brightly like a lucky penny found
+      face-up in the street.
+
+
+     :Valley Floor
+
+     >> INVENTORY
+
+     :You possess the following:
+        A bent fork.
+        A piece of string.
+
+     :You are wearing:
+        An asexual sarong.
+        A pair of dark sunglasses.
+
+
+     :Valley Floor
+
+     >> X FORK
+
+     :The fork has two tongs and a bent handle.
+
+
+     :Valley Floor
+
+     >> DROP FORK
+
+     :Dropped.
+
+
+     :Valley Floor
+
+     :A two-pronged fork lies here.  It's left-hand tong points NW.
+
+     >> OPEN DOOR
+
+     :The door is locked.
+
+
+     :Valley Floor
+
+     :A two-pronged fork lies here.  It's left-hand tong points NW.
+
+                                      -6-
+
+
+
+
+
+     >> GET FORK
+
+     :Taken.
+
+
+     :Valley Floor
+
+     >> UNLOCK DOOR
+
+     :You must use some key or implement to unlock the barred door.
+
+
+     :Valley Floor
+
+
+     >> X METAL SCRAPS
+
+     :You scour the metal with your eyes, separating the flowers from
+      the chaff, and, in doing so, hone in on a bronze key glinting on
+      the valley floor.
+
+     :A bronze key glints in the sunshine here.
+
+
+     :Valley Floor
+
+     >> GET KEY
+
+     :Taken.
+
+
+     :Valley Floor
+
+     >> I
+
+     :You possess the following:
+        A bent fork.
+        A bronze key.
+        A piece of string.
+
+     :You are wearing:
+        An asexual sarong.
+        A pair of dark sunglasses.
+
+
+     :Valley Floor
+
+     >> PICK SILVER FLOWER
+
+     :As you try to pick the silver flower, your hand feels as if you
+      dipped it in a pond dappled by moonlight.  The petals ripple
+      complainingly, part and unpart, but remain unpicked.
+
+                                      -8-
+
+
+
+
+
+     :Valley Floor
+
+     >> EXITS
+
+     :You may travel in the following directions:  E, NW, S, W.
+
+
+     :Valley Floor
+
+     >> NW
+
+     :The door is closed.
+
+
+     :Valley Floor
+
+     >> UNLOCK DOOR WITH KEY
+
+     :Unlocked.
+
+
+     :Valley Floor
+
+     >> OPEN DOOR
+
+     :Opened.
+
+
+     :Valley Floor
+
+     >> NW
+
+     :You proceed into the dark embrace of an encompassing cavern.
+
+
+     :Crystal Cavern
+
+     :It is completely and utterly dark.
+
+     >> TAKE OFF DARK SUNGLASSES
+
+     :You are dazzled.  The sun reflected off the metal flowers on the
+      valley floor enters from the SE and mixes it's bronze and gold with
+      the blue, cyan, and cobalt hues radiating from stalactites hanging
+      from the roof of this gigantic crystal cavern.
+
+     :Surprisingly, it is not cold in this ice-cavern.  However, you feel
+      a chill coming from the NE.
+
+                                      -9-
+
+
+
+
+
+     :Crystal Cavern
+
+     >> SCORE
+
+     :You have scored 34 out of 344 points in 82 turns.
+     :You have the feeling that this is the beginning of the great
+      adventure.
+
+
+     :Crystal Cavern
+
+     >> TIE STRING AROUND FINGER
+
+     :You tie the piece of string around your finger as a reminder that
+      this game is probably good enough to register.
+
+                                     -10-
+
+
+
+
+
+     COMMAND LINE SWITCHES
+
+
+     Normally, the game runs in 384k.
+
+     If you have memory constraints, you may run it in 256k by starting it
+     up as:
+
+
+             T-ZERO DISK
+
+             This alternative accesses the text file from disk rather
+             than memory and is slower.
+
+
+     To start directly from a save file, type:
+
+             T-ZERO <save-file name>
+
+
+     To run in 256k, starting directly from a save file, type:
+
+             T-ZERO DISK <save-file name>
+
+
+     INPUT BUFFER
+
+
+     Adventure gamers often find themselves in the situation where
+     they are repeatedly retyping the same commands.  To facilitate
+     command processing, an input buffer of the last ten commands
+     processed is maintained.  To utilize this facility, you may
+     retrieve commands in the reverse order processed by using the
+     gray '-' and gray '+' keys, or if you are in cursor control
+     keyboard mode (see commands KEYS, KEYBOARD, and the section
+     entitled "Keyboard Layout"), the up and down arrow keys.  You
+     may always retrieve the last command processed using program
+     function key 3 (PF3).
+
+
+     PLAYER DEFINABLE FUNCTION KEYS
+
+
+     If you discover you're using a command frequently, you may equate
+     it to program function keys 5, 6, 7, 8, or 9.  To do so, type
+     PF<n> (where <n> ranges from 5 to 9) on the command line, followed
+     by the command desired.  From thenceforth, that command may be
+     retrieved and acted upon by depressing the equivalent program
+     function key.  Typing USERKEYS will produce a summary of player
+     defined keys currently in effect.
+
+                                      -11-
+
+
+
+
+
+     COMMANDS
+
+
+     In the following command descriptions, a toggle command is
+     defined as a command that changes the on/off status of a feature.
+     If the feature is on, the toggle command turns it off.  If the
+     feature is off, the toggle command turns it on.
+
+
+     BRIEF      This is the default mode for room and location
+                descriptions.  A full description of the area will
+                be presented to the player the first time the room
+                is entered.  Thereafter, only the room or location's
+                name will appear on the screen.  Full descriptions
+                can be activated by switching to the VERBOSE mode.
+                This same description can be displayed for a single
+                turn by simply typing LOOK.
+
+     COLORS     If an EGA or above hardware is present, cycles through
+                four pre-defined palette selections.
+
+     COMPRESS   Changes the number of lines displayed on the screen.
+     (Toggle)   If 25 lines are currently being displayed, the toggle
+                switches to 43 lines if the presence of an EGA is
+                detected or 50 lines if the presence of a VGA is
+                detected.  If either 43 or 50 lines are being displayed,
+                the toggle switches back to the default mode of 25 rows.
+
+     CREDITS    Displays information on the games origins.  Gives
+                credit and thanks to the originator's of copyrighted
+                information for their permission to quote that material.
+                Gives credit and thanks to the beta-testing team.
+                Provides a brief background of the author.
+
+     DOS        Shells to the DOS command level.  For those who are
+                unfamiliar  with shells, this simply means that the
+                game is temporarily suspended and all DOS commands are
+                available to you until you type EXIT to return to the
+                game.
+
+                Why would a game have a DOS shell?  For any number of
+                reasons--game related or otherwise.  For example, if
+                you wish to restore a game state from a save file and
+                have forgotten the name of the save file, you can shell
+                to DOS and issue a DIR command to list all save files.
+
+                Or if your game play is threatened by some unattended
+                piece of PC-business impinging upon your consciousness,
+                you can shell to DOS, take care of that business, and
+                then return to the game without reloading it by simply
+                typing EXIT at the DOS prompt.
+
+                                     -12-
+
+
+
+
+
+     EXITS      Displays a list of all directions leading from the current
+     (PF4)      location.
+
+     HELP(H)    Displays a list of all the commands available in the
+     (PF1)      game with an abbreviated description of their function.
+                The list of commands is the same as the command summary
+                in this document.
+
+     HINT       Provides the stumped adventurer with a gentle nudge
+                useful in solving some puzzles.  Hints are cued to
+                player location and what has been solved thus far.
+                Several hints may be available to the user at each
+                location, each less subtle than the previous.  The
+                player is given the option of seeing only those they
+                wish to see.
+
+     HINTS      Actually, there's no such command.  Once hints are
+                disabled through the NOHINTS command, they cannot be
+                enabled again without restarting the game.
+
+     INFO       Since t-zero is a shareware product, information is
+                provided on registration.  This information is presented
+                in this document as well.
+
+     INVENTORY  Provides a list of items in the adventurer's possession
+     (I)        at the current time.
+
+     KEYS       There are two keyboard layouts available to the player.
+     (Toggle)   For reference, these are referred to as the "directional"
+     (PF2)      mode and the "cursor control" mode.  (Summaries of the
+                effect of depressing a particular key under each layout
+                is summarized in the section entitled "Keyboard Layout").
+                In general, directional mode interprets the arrow keys
+                and the numeric key pad as designating compass directions
+                for the player to travel (for example, the right arrow
+                is equivalent to East).  Cursor control mode utilizes
+                the keys for command line editing. The KEYS command
+                switches between keyboard modes.  If you are in cursor
+                control mode, it switches to directional mode.  If you
+                are in directional mode, it switches to cursor control
+                mode which is the default mode.  If you are unsure what
+                keyboard mode you're in or wish to see what editing
+                commands are available to you, typing KEYBOARD will let
+                you know.
+
+     KEYBOARD   Reveals what keyboard layout you're using (either
+                directional or cursor control) and presents a summary
+                of the keystroke functions in that mode.  This summary
+                is the same as presented in this document in the section
+                entitled "Keyboard Layout."
+
+                                     -13-
+
+
+
+
+
+     LOG        Sometimes it might be convenient to review the game's
+     (Toggle)   prose without actually playing the game (or you might be
+                so taken with the prose you want a permanent copy!).
+                To log all text displayed on the screen to the file
+                T-ZERO.SCR, type LOG.  To turn off this feature, type
+                LOG again.  If the file T-ZERO.SCR does not exist, it is
+                created.  If it exists, new text is appended to the old
+                file.
+
+     MORE       Normally, if an action by the player triggers the
+     (Toggle)   display of more than a full screen of text, the display
+                will pause at each screen and the word MORE> will appear
+                in the lower right hand corner of the screen.  The
+                player can then pause, read the text leisurely, and then
+                "hit any key to continue."  However, if you are replaying
+                a portion of the game or are using the FIND command to
+                navigate between far-flung locations, you can suppress
+                this courteous pause by typing MORE.  You can return to
+                the screen pause default by typing MORE once again (this
+                is a toggle).  It is recommended that you stick to the
+                default mode unless you are replaying a portion of the
+                game.  Otherwise, an important clue might scroll by you
+                without allowing itself to be read.  Of course, unread
+                herrings would zip by as well.
+
+     NOHINTS    The temptation to use the hint file may be strong for
+                some to resist.  The intrepid adventurer may therefore
+                wish to kill the hint file for the duration of the
+                game.  To do so, type NOHINTS.  Once this command is
+                issued, it is no longer possible to use the HINT command
+                and you can't retreat to hint mode without restarting
+                the game.
+
+     QUIT       This command quits the game (after first displaying
+     (Q)        your score and rank) and returns you to the DOS command
+                level.
+
+     RESTART    Recreates the initial state of the game.  This is a
+                convenient way to start over without quitting and
+                reloading t-zero.
+
+     RESTORE    Returns the game (from the supplied save file name) to
+                the state it was in when the save file was created.  If
+                no save file name is supplied, the default T-ZERO.SAV
+                is used.
+
+     REVISIONS  Presents a brief version history of the game and
+                indicates what changes have been incorporated into
+                each version.
+
+                                     -14-
+
+
+
+
+
+     SAVE       You've had a hard day on the play field and want to
+                quit or you want to experiment with certain potentially
+                disastrous actions.  You can save the state of the game
+                by typing SAVE.  You will be prompted for a file name.
+                If you supply none, the default is T-ZERO.SAV.  To
+                return to this saved state, type RESTORE and supply
+                the corresponding save file name when prompted.
+
+     SCORE      No, this command doesn't increment your score but it
+                does display your score and a brief verbal tag
+                indicating your "rank."
+
+     SCRIPT     Produces a hard copy of the game's prose on the
+     (Toggle)   printer.  This hard copy echoes the screen display.
+                Typing SCRIPT once more will suppress further printing.
+
+     SOUND      Normally, when you score, you're made aware of the
+     (Toggle)   fact by an audio beep (or charge or whatever you want
+                to call it).  As a courtesy to others in your "play
+                vicinity," you may wish to suppress this audio signal.
+                Typing SOUND will suppress the beep.  Typing SOUND
+                again will bring it back on.
+
+     SPACE      To improve readability, logical chunks of prose are
+     (Toggle)   double-spaced.  If you wish to cram more on a screen,
+                you can single-space screen output by typing SPACE.
+                Typing SPACE once more will return you to double-
+                spaced screen output.  SPACE also effects text being
+                echoed to the printer through the SCRIPT command.
+
+     TIME       Tells time in terms of the clock in the game's universe
+     (WHEN)     (Alt-T) displays a time window in terms of the real
+                world's time.  This is included for players who get so
+                immersed in the game they need a reality check.
+
+     UNDO       Oops!  I didn't mean to do that!  You can undo the
+     (OOPS)     effect of a bad or disastrous action by typing UNDO.
+                This, in effect, returns the game to the state it was
+                in before the turn was taken.  Certain commands, such
+                as those summarized in this list, can't be undone.
+                And, of course, if you want to UNDO an UNDO command,
+                simply redo what you undid (Clear?).
+
+     USERKEYS   Produces a summary of player defined function keys
+                currently in effect.  See the section entitled "Player
+                Definable Function Keys" for an explanation of how
+                to equate a key with a command.
+
+     VERBOSE    Normally, a room's description is only presented upon
+                first encountering (or first illuminating) that
+                location.  To display the full room description every
+                time you reenter a room, type VERBOSE.  To return to
+                the default mode, type BRIEF.
+
+                                     -15-
+
+
+
+
+
+     VERSION    Indicates the level number of the current version of
+                the game.
+
+                                     -16-
+
+
+
+
+
+     COMMAND SUMMARY
+
+
+     BRIEF     --Displays only the name of a location upon entry.
+     COLORS    --Switches to a new color palette (four available).
+     COMPRESS  --Switches between 25-row and 43/50-row mode for screen
+                 output.
+     CREDITS   --Displays information on the game's origins.
+     DOS       --Shells to the DOS command level (useful for checking
+                 save files).
+     HELP(F1)  --Displays this command summary.
+     HINT      --Provides a gentle nudge or clue to the stumped
+                 adventurer.
+     HINTS     --No such command --you can turn hints off with NOHINTS
+                 but you can't turn them back on.
+     INFO      --Displays information on shareware registration.
+     INVENTORY --Lists the player's current possessions.
+     KEYS(F2)  --Toggles between standard and directional keyboard
+                 layouts.
+     KEYBOARD  --Displays keyboard commands currently in effect.
+     LOG       --Toggles logging of screen output to file T-ZERO.SCR.
+     MORE      --Toggles pausing after display of a full screen of text.
+     NOHINTS   --Disables hints for the rest of the game.
+     QUIT      --Exits the game.
+     RESTART   --Recreates the initial state of the game (starts over).
+     RESTORE   --Restores the game from optional <filename>.
+     REVISIONS --Explains any revisions to the current version of the game.
+     SAVE      --Saves the game to optional <filename>.
+     SCORE     --Displays your current points and your "rank."
+     SCRIPT    --Toggles printing of screen output.
+     SOUND     --Toggles atmospheric sound effects.
+     SPACE     --Toggles double spacing of output.
+     TIME      --The current time in terms of the clock in the game's universe.
+     UNDO(OOPS)--Undoes the effect of the previous action.
+     USERKEYS  --Summarizes player defined function keys currently in
+                 effect.
+     VERBOSE   --Displays the full description of a location upon entry.
+     VERSION   --Displays the Version number and Copyright information.
+
+                                     -17-
+
+
+
+
+
+     ADDITIONAL COMMANDS
+
+
+       If you have sufficient savvy, the following VERBS might prove
+       useful:
+
+     EXITS(F4) --indicates direction of paths leading from current
+                 location.
+
+     COPY      --<item> to <item>:  A good way to transcribe various
+                 bits of arcana that might slip the memory.
+
+     FIND      --<item>:  Locates the object and steps the player to
+                 that location.
+
+     IMAGINE   --<item>:  Allows player to "visualize" unencountered
+                 objects or locations.
+
+     WHERE     --optional <item>:  Gives you the current location of the
+                 object under inquiry.
+
+
+     IMPORTANT NOTE:  To enable the WHERE, FIND, and COPY command, you
+                      must solve a certain puzzle.
+
+                                      -18-
+
+
+
+
+
+     VERB LIST
+
+
+     The following verbs are accepted by the parser (abbreviations are
+     enclosed in parentheses:
+
+
+     Ascend        Drop             Jump           Read          Swim
+     Ask           Eat              Kiss           Remove        Take
+     Attach        Enter            Knock          Reset         Talk
+     Attack        Examine(X)       Leap           Ride          Tear
+     Bark          Exit             Leave          Ring          Tell
+     Blow          Extinguish       Listen         Rub           Throw
+     Break         Feed             Lock           Scrape        Tilt
+     Bury          Fill             Look(L)        Shake         Turn
+     Call          Find             Look Up        Shoot         Unlock
+     Climb         Fix              Open           Shut          Wash
+     Copy          Follow           Pick           Sit           Water
+     Count         Get              Plant          Sleep         Wave
+     Cross         Give             Play           Smell         Wear
+     Cut           Go               Pop            Snap          Where
+     Dance         Hang             Pour           Spin          Wind
+     Descend       Hold             Pull           Spray         Yell
+     Dig           Ignite           Punch          Stand
+     Dip           Imagine          Push           Step
+     Drink         Juggle           Put            Stone
+
+
+     The following synonyms are alternative ways to express the same
+     actions represented in the list above:
+
+
+     Burn          Feel             Merge          Run           Toss
+     Bust          Fight            Mount          Rush          Touch
+     Carry         Fit              Move           Say           Transcribe
+     Catch         Fuse             Name           Scream        Travel
+     Clean         Hit              Observe(X)     Set           Untie
+     Close         Injure           Overturn       Shout         Walk
+     Connect       Insert           Place          Slay          Yank
+     Detach        Join             Pluck          Slice
+     Donate        Kick             Press          Slide
+     Drag          Kill             Proceed        Smash
+     Extract       Lie              Rip            Stare
+     Fasten        Meld             Roll           Tie
+
+
+     For a list of game commands, type HELP(H) or press PF key 1.
+
+
+                                     -19-
+
+
+
+
+
+     KEYBOARD LAYOUT
+
+
+     In the following summary, an entry ^L means hitting the control
+     key and L simultaneously and an entry ALT-L means hitting the alt
+     key and L simultaneously.
+
+
+     CURSOR control keyboard mode:
+
+
+       Cursor movement commands:
+
+         Left Arrow  -- left one column.
+         Right Arrow -- right one column.
+         ^Left Arrow -- left one word.
+         ^Right Arrow-- right one word.
+         HOME        -- beginning of line.
+         END         -- to end of line.
+
+
+       Command retrieval:
+
+         Up Arrow    -- Previous command.
+         Down Arrow  -- Next command.
+         Gray '-'    -- Previous command.
+         Gray '+'    -- Next command.
+         F1          -- Displays help file.
+         F2          -- Changes keyboard mode.
+         F3          -- Displays last command processed.
+         F4          -- Displays room exits.
+         F5-F9       -- Executes player defined command.
+         Alt-T       -- Pops open time window.
+         Alt-X       -- Quits game.
+
+
+       Deletion commands:
+
+         BackSpace   -- Deletes character left of cursor.
+         DEL         -- Deletes character right of cursor.
+         ^W          -- Deletes word left of cursor.
+         Alt-W       -- Deletes word right of cursor.
+         ^L          -- Deletes all characters left of cursor.
+         Alt-L       -- Deletes all characters right of cursor.
+         Alt-K or ESC-- Deletes all characters on the line or closes
+                        time window.
+         Alt-U or ^U -- Pastes back deleted text at cursor (undeletes).
+
+
+       Insertion command:
+
+         INS         -- Toggles Insert/Overwrite mode.
+
+
+                                     -20-
+
+
+
+
+
+
+       Bypass start-up screen:
+
+         ESC
+
+                                     -21-
+
+
+
+
+
+     DIRECTIONAL control keyboard mode:
+
+
+       Directional movement commands:
+
+         HOME        -- NW.                  END         -- SW.
+         Up Arrow    -- N.                   Down Arrow  -- S.
+         Page Up     -- NE.                  Page Down   -- SE.
+         Right Arrow -- E.                   Left Arrow  -- W.
+         ^Right Arrow-- U.                   ^Left Arrow -- D.
+
+
+       Cursor movement commands:
+
+         BackSpace   -- Moves cursor left one column.
+
+
+       Command retrieval:
+
+         Gray '-'    -- Previous command.
+         Gray '+'    -- Next command.
+         F1          -- Displays help file.
+         F2          -- Changes keyboard mode.
+         F3          -- Displays last command processed.
+         F4          -- Displays room exits.
+         F5-F9       -- Executes player defined command.
+         Alt-T       -- Pops open time window.
+         Alt-X       -- Quits game.
+
+
+       Deletion commands:
+
+         DEL         -- Deletes character right of cursor.
+         ^W          -- Deletes word left of cursor.
+         Alt-W       -- Deletes word right of cursor.
+         ^L          -- Deletes all characters left of cursor.
+         Alt-L       -- Deletes all characters right of cursor.
+         Alt-K or ESC-- Deletes all characters on the line or close
+                        time window.
+         Alt-U or ^U -- Pastes back deleted text at cursor (undeletes).
+
+
+       Insertion command:
+
+         INS         -- Toggles Insert/Overwrite mode.
+
+
+       Bypass start-up screen:
+
+         ESC
+
+                                     -22-
+
+
+
+
+
+     BIBLIOGRAPHY
+
+
+     For further exploration and reading pleasure.
+
+
+     PUZZLE AND PARADOX
+
+     Abbott, Robert, Mad Mazes, New York:  Holbrook, MA:  Bob Adams, Inc.
+         Publishers, 1990.
+
+     Carroll, Lewis, Alice in Wonderland.
+
+     Poundstone, William, Labyrinths of Reason, New York:  Doubleday,
+        1988.
+
+
+     TIME
+
+     Aveni, Anthony, Empires of Time, New York:  Basic Books, Inc.
+         Publishers, 1989.
+
+     Fraser, J. T., Time, The Familiar Stranger, Redmond, WA:  Microsoft
+        Press, 1988.
+
+                                     -23-
+
+
+
+
+
+     SHAREWARE INFORMATION
+
+
+     Shareware distribution gives users a chance to try software before
+     buying it.  If you try a Shareware program and continue using it,
+     you are expected to register.  Individual programs differ on details--
+     some request registration while others require it, some specify a
+     maximum trial period.  With registration, you get anything from the
+     simple right to continue using the software to an updated program
+     with printed manual.
+
+     Copyright laws apply to both Shareware and commercial software, and
+     the copyright holder retains all rights, with a few specific exceptions
+     as stated below (see "Warranty Information").  Shareware authors are
+     accomplished programmers, just like commercial authors, and the
+     programs are of comparable quality (in both cases, there are good
+     programs and bad ones!).  The main difference is in the method of
+     distribution.  The author specifically grants the right to copy and
+     distribute the software, either to all and sundry or to a specific
+     group.  For example, some authors require written permission before
+     a commercial disk vendor may copy their Shareware.
+
+     Shareware is a distribution method, not a type of software.  You
+     should find software that suits your needs and pocketbook, whether
+     it's commercial or Shareware.  The Shareware system makes fitting
+     your needs easier, because you can try before you buy.  And because
+     the overhead is low, prices are low also.  Shareware has the ultimate
+     money-back guarantee--if you don't use the product, you don't pay for
+     it.
+
+
+     ASP OMBUDSMAN STATEMENT
+
+        "This program is produced by a member of the Association
+         of Shareware Professionals (ASP).  ASP wants to make sure
+         that the shareware principle works for you.  If you are
+         unable to resolve a shareware-related problem with an ASP
+         member by contacting the member directly, ASP may be able
+         to help.  The ASP Ombudsman can help you resolve a dispute
+         or problem with an ASP member, but does not provide
+         technical support for members' products.  Please write to
+         the ASP Ombudsman at 545 Grover Road, Muskegon, MI 49442-
+         9427 or send a Compuserve message via CompuServe Mail to
+         ASP Ombudsman 70007,3536."
+
+                                     -24-
+
+
+
+
+
+     WARRANTY INFORMATION
+
+     Users of t-zero must accept this disclaimer of warranty:
+
+        "t-zero is supplied as is.  The author disclaims all
+         warranties, expressed or implied, including, without limitation,
+         the warranties of merchantability and of fitness for any purpose.
+         The author assumes no liability for damages, direct or conse-
+         quential, which may result from the use of t-zero."
+
+     t-zero is a "shareware program" and is provided at no charge to the
+     user for evaluation.  Feel free to share it with your friends, but
+     please do not give it away altered or as part of another system.
+
+     The following files must be included in any distributed copy:
+
+        T-ZERO.EXE
+        T-ZERO.DAT
+        T-0.DAT
+        DOCUMENT.T-0
+        REGISTER.ME
+        HINT.DAT
+
+     (beginning with V1.04, the hint file is included in both registered
+      and unregistered versions).
+
+
+     The essence of "user-supported" software is to provide personal
+     computer users with quality software without high prices, and yet
+     to provide incentive for programmers to continue to develop new
+     products.  If you find this game enjoyable and find that you are
+     playing t-zero and continue to play t-zero after a reasonable trial
+     period, you must make a registration payment of $20.00 to the author.
+
+     The $20.00 registration fee will license one copy for use on any one
+     computer at any one time.  You must treat this software just like
+     a book.  An example is that this software may be used by any number
+     of people and may be freely moved from one computer location to
+     another, so long as there is no possibility of it being used at one
+     location while it's being used at another.  Just as a book cannot
+     be read by two different persons at the same time.
+
+     Anyone distributing t-zero for any kind of remuneration must first
+     contact the author at the address below for authorization.  This
+     authorization will be automatically granted to distributors
+     recognized by the (ASP) as adhering to its guidelines for shareware
+     distributors, and such distributors may begin offering t-zero
+     immediately (However the author must still be advised so that the
+     distributor can be kept up-to-date with the latest version of t-zero.).
+
+                                     -25-
+
+
+
+
+
+     You are encouraged to pass a copy of t-zero along to your
+     friends for evaluation.  Please encourage them to register their
+     copy if they find that they can use it.  All registered players
+     will receive a copy of the latest version of t-zero.
+
+                                     -26-
+
+
+
+
+
+     REGISTRATION INFORMATION
+
+
+     Registered users will receive a disk containing the most recent
+     version of t-zero.  If your version number has changed, save
+     files may not be compatible between the two versions.  The cover
+     letter accompanying the registered version will indicate which
+     versions have compatible save files.  Those of you who wish,
+     will also be sent a complete walk-thru detailing a step-by-step
+     solution to the game and a diagram that maps the maze.
+
+     To register, send $20.00 (check or money order) + $2.00 (shipping
+     and handling--total $22.00) and the attached registration form to:
+
+         Dennis Cunningham
+         No. 405
+         25-6 NW 23rd Pl.
+         Portland, OR
+                   97210-3534
+
+
+     The author also welcomes comments and suggestions and can be reached
+     at the above mailing address or the following E-Mail addresses:
+
+         CompuServe:  71107,3037
+         GEnie:       D.CUNNINGHA9
+         PRODIGY:     DNSB02A
+         Delphi:      D.CUNNING
+         Phone:       (503) 227-7751
+         FAX:         (503) 228-8397 (please specify box 405 on cover sheet).
+
+
+     BRITISH REGISTRATION
+
+
+     British players may register t-zero through my British represen-
+     tative, Graham Cluley (you may want to check out his "Humbug" at
+     the same time) for 12 pounds British including shipping and handling.
+
+     Graham Cluley
+     "Malvern"
+     Seaton Road
+     Camberley
+     Surrey, Great Britain
+     GU15 3NG
+
+                                     -27-
+
+
+
+
+
+     AUSTRALIAN REGISTRATION
+
+     In Australia this program can be registered through BUDGETWARE
+     for $25.00 Australian including shipping and handling.  The
+     latest version will be sent to you direct from the author.
+     Payment can be made by cheque (I'll use the Australian spelling
+     here) drawn on an Australian bank, money order, Bankcard,
+     Mastercard, or Visacard.  Send payment with details to:
+
+     BUDGETWARE
+     P O Box 496
+     Newtown NSW 2042
+     Australia
+     Phone (02) 519-4233
+     FAX   (02) 516-4236
+
+
+     SUPPORT POLICY
+
+     The author will willingly track down and correct any reported bugs
+     and create a new version to correct them.  He has been known to
+     provide gentle nudges that go where no hints have gone before.
+
+     He also provide telephone, E-Mail, and mail support.  Prior to
+     5:00 PM, Pacific Time, a voice-messaging system will take your
+     query (he cannot return long-distance calls but will get back
+     to you by mail).  After 5:00 PM, you may talk directly to the
+     author.
+
+     Even if you decide not to register, your comments are always welcome.
+     Thanks for your interest in the game.  A new one is already in the works!
+
+
+     HINTS
+
+     It's easy to get stuck!  I do it all the time.  Contacting fellow
+     players is a good way to edge your way past roadblocks.  Different
+     players seem to bog down in different places.  I would recommend
+     the following boards for assistance:
+
+         GO GAMERS on CompuServe.
+         SCORPIA bulletin board on GEnie.
+         Computer Club, Adventure Games, L-Z on Prodigy.
+
+     In particular, a large number of players on Prodigy have completed
+     the game and are always willing to lend a hand.
+
+                                     -28-
+
+
+                    Registration Form (t-zero V1.04)
+
+
+     Name:  ______________________________________________________________
+
+     Address:  ___________________________________________________________
+
+     City, State:  _______________________________________________________
+
+     Zip Code:  __________________________________________________________
+
+     Telephone Number (optional):  _______________________________________
+
+     Disk Format: [5.25"]  ________  [3.5"]  ________
+
+     Do you wish to receive a walk-thru?:  Yes  ________  No ________
+
+     WARNING:  A walk-thru is a step-by-step solution to the game and
+               may diminish the pleasure you derive from the game.
+
+     You may answer or leave these questions blank at your discretion:
+
+     1)  Where did you obtain your copy of t-zero?
+
+
+
+     2)  What types of themes would you like to see explored in text
+         adventures?
+
+
+
+     3)  What features would you like to see added to a text adventure
+         like t-zero?
+
+
+
+     4)  What type of hardware do you play games on?
+
+
+
+     5)  Additional comments:
+
+
+
+     Send form and payment to:
+
+     UNITED STATES           GREAT BRITAIN                AUSTRALIA
+     ($22.00)                (12 pounds)                  ($25.00)
+
+
+     Dennis Cunningham       Graham Cluley                BUDGETWARE
+     No. 405                 "Malvern"                    P O Box 496
+     25-6 NW 23rd Pl.        Seaton Road                  Newtown NSW 2042
+     Portland, OR            Camberley                    Australia
+             97210-3534      Surrey, Great Britain
+                             GU15 3NG
+
