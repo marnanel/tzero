@@ -450,16 +450,6 @@ Since the covered portico only admits morning and evening light,
 a sundial is curiously placed in its center.
 ";
 
-Object Library "Library."
-has light
-with
-! no explore data
-    description
-        "This cavernous interior is partitioned by long rows of book-shelves
-which reach to the rafters.  The books are arranged by the color of
-their spines.  Three buttons are set on a plaque near the entrance.
-";
-
 Object BackOfMuseum "Back of Museum."
 has light
 with

@@ -8,9 +8,11 @@ Include "grammar";
 
 Include "Present.inf";
 Include "Objects.inf";
+Include "Library.inf";
 
 [ Initialise;
-    location = RiverBed;
+    !location = RiverBed;
+    location = Library;
     move CompassThing to Player;
     move PinkSlip to Player;
 
